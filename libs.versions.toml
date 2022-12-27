@@ -1,0 +1,29 @@
+[versions]
+kotlin = "1.7.20"
+
+shadow = "7.1.2"
+purpur = "1.19.3-R0.1-SNAPSHOT"
+plugin-yml = "0.5.2"
+
+exposed = "0.41.1"
+fantasy = "0.0.1"
+brigadier = "1.0.18"
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+
+shadow = { id = "com.github.johnrengelman.shadow", version.ref = "shadow" }
+plugin-yml = { id = "net.minecrell.plugin-yml.bukkit", version.ref = "plugin-yml" }
+
+[libraries]
+purpur-api = { module = "org.purpurmc.purpur:purpur-api", version.ref = "purpur" }
+
+brigadier = { module = "com.mojang:brigadier", version.ref = "brigadier" }
+
+exposed-core = { module = "org.jetbrains.exposed:exposed-core", version.ref = "exposed" }
+exposed-dao = { module = "org.jetbrains.exposed:exposed-dao", version.ref = "exposed" }
+exposed-jdbc = { module = "org.jetbrains.exposed:exposed-jdbc", version.ref = "exposed" }
+
+fantasy-core = { module = "io.github.fantasy:fantasy-core", version.ref = "fantasy" }
+fantasy-menus = { module = "io.github.fantasy:fantasy-menus", version.ref = "fantasy" }
+fantasy-commands = { module = "io.github.fantasy:fantasy-commands", version.ref = "fantasy" }
