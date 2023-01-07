@@ -40,7 +40,7 @@ class PlotWorldListener(val plugin: PlotWarden): Listener {
         }
 
         val vector = Vector2(event.block.x, event.block.z)
-        val origin = plugin.plotWorldManager.getPlotOrigin(vector, false)
+        val origin = plugin.plotWorldManager.getPlotOrigin(vector)
         val plot = plugin.plotService.getPlot(origin)
         if (plot == null) {
             player.sendMessage("§c§lERROR §fYou don't have enough permissions to build in this area.")

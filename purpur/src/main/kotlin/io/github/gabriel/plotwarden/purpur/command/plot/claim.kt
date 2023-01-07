@@ -26,7 +26,7 @@ internal fun Command.claim(plugin: PlotWarden) = literal("claim") {
             return@executor
         }
 
-        val origin = plugin.plotWorldManager.getPlotOrigin(Vector2(location.blockX, location.blockZ), false)
+        val origin = plugin.plotWorldManager.getPlotOrigin(Vector2(location.blockX, location.blockZ))
         val existingPlot = plugin.plotService.getPlot(origin)
 
         if (existingPlot != null) {

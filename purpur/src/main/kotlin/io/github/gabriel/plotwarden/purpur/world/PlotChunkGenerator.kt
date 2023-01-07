@@ -1,8 +1,10 @@
 package io.github.gabriel.plotwarden.purpur.world
 
 import io.github.gabriel.plotwarden.manager.PlotWorldManager
+import io.github.gabriel.plotwarden.manager.decorator.PlotWorldDecorator
+import io.github.gabriel.plotwarden.purpur.service.ChunkRelativePlotWorldDecorator
 import io.github.gabriel.plotwarden.struct.PlotWorldSpaceType
-import io.github.gabriel.plotwarden.struct.Vector3
+import io.github.gabriel.plotwarden.struct.Vector2
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.World
@@ -13,6 +15,8 @@ import org.bukkit.generator.WorldInfo
 import java.util.*
 
 class PlotChunkGenerator(val worldManager: PlotWorldManager): ChunkGenerator() {
+    var decorator: (ChunkData, Vector2) -> PlotWorldDecorator
+            = { chunkData, coordinates -> ChunkRelativePlotWorldDecorator(chunkData, coordinates) }
     val defaultHeight = worldManager.world.defaultHeight
 
     override fun generateNoise(worldInfo: WorldInfo, random: Random, chunkX: Int, chunkZ: Int, chunkData: ChunkData) {
@@ -23,10 +27,19 @@ class PlotChunkGenerator(val worldManager: PlotWorldManager): ChunkGenerator() {
                 }
                 val (blockX, blockZ) = x + (chunkX * 16) to z + (chunkZ * 16)
                 val spaceType = worldManager.getSpaceType(blockX, blockZ)
+                val blockVector = Vector2(blockZ, blockZ)
 
                 if (spaceType == PlotWorldSpaceType.Road) {
                     for (y in worldInfo.minHeight + 1..defaultHeight) {
                         chunkData.setBlock(x, y, z, Material.NETHER_BRICKS)
+                    }
+
+                    val decorator = decorator(chunkData, Vector2(x, z))
+                    val relativeVector = worldManager.relativeVector(blockVector)
+                    if (worldManager.isCrossRoad(blockVector)) {
+                        worldManager.painter?.paintCrossRoad(relativeVector.minus(1, 1), decorator)
+                    } else {
+                        worldManager.painter?.paintCrossRoad(relativeVector.minus(3, 3), decorator)
                     }
                 } else if (spaceType == PlotWorldSpaceType.Border) {
                     for (y in worldInfo.minHeight + 1..defaultHeight) {
