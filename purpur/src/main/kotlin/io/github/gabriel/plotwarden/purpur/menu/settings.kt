@@ -5,6 +5,7 @@ import io.github.fantasy.util.itemStack
 import io.github.fantasy.util.name
 import io.github.gabriel.plotwarden.database.Plot
 import io.github.gabriel.plotwarden.purpur.PlotWarden
+import io.github.gabriel.plotwarden.purpur.util.symbolicBlock
 import net.kyori.adventure.text.Component
 import org.bukkit.Material
 import org.bukkit.block.Biome
@@ -32,7 +33,7 @@ private val PlotWarden.biomeSettings get() = menu(54) {
     }
     pagination {
         fixed(Biome.values().asList(), 45) { page, biome ->
-            item()
+            item(0, itemStack(biome.symbolicBlock).name())
         }
     }
 }

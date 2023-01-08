@@ -4,4 +4,6 @@ import io.github.gabriel.plotwarden.struct.Vector2
 
 interface PlotWorldPainter {
     fun paintCrossRoad(roadRelativeVector: Vector2, decorator: PlotWorldDecorator)
+
+    fun paintNormalRoad(roadRelativeVector: Vector2, decorator: PlotWorldDecorator)
 }

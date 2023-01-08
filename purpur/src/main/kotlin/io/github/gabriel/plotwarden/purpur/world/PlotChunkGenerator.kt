@@ -34,12 +34,15 @@ class PlotChunkGenerator(val worldManager: PlotWorldManager): ChunkGenerator() {
                         chunkData.setBlock(x, y, z, Material.NETHER_BRICKS)
                     }
 
+                    if (worldManager.painter == null)
+                        return
+
                     val decorator = decorator(chunkData, Vector2(x, z))
                     val relativeVector = worldManager.relativeVector(blockVector)
                     if (worldManager.isCrossRoad(blockVector)) {
                         worldManager.painter?.paintCrossRoad(relativeVector.minus(1, 1), decorator)
                     } else {
-                        worldManager.painter?.paintCrossRoad(relativeVector.minus(3, 3), decorator)
+                        worldManager.painter?.paintNormalRoad(relativeVector.minus(3, 3), decorator)
                     }
                 } else if (spaceType == PlotWorldSpaceType.Border) {
                     for (y in worldInfo.minHeight + 1..defaultHeight) {

@@ -12,14 +12,16 @@ class PlotWorldManager(val world: PlotWorld) {
     private val plotTotalLength = world.plotTotalLength
     private val plotTotalWidth = world.plotTotalWidth
 
+    private val roadLengthRange = 1..world.roadLength
+
     var painter: PlotWorldPainter? = null
 
     fun isCrossRoad(location: Vector2, assertLocationIsARoad: Boolean = false): Boolean {
         if (assertLocationIsARoad)
             assert(getSpaceType(location.x, location.z) == PlotWorldSpaceType.Road)
 
-        return (abs(location.x) + roadLimit + 1) % (plotTotalLength + world.roadLength) in 1..world.roadLength
-                && (abs(location.z) + roadLimit + 1) % (plotTotalWidth + world.roadLength) in 1..world.roadLength
+        return relativeX(location.x) in roadLengthRange
+                && relativeZ(location.z) in roadLengthRange
     }
 
     fun getPlotOrigin(location: Vector2, assertLocationIsAPlot: Boolean = false): Vector2 {
@@ -40,8 +42,8 @@ class PlotWorldManager(val world: PlotWorld) {
 
     fun getSpaceType(x: Int, z: Int): PlotWorldSpaceType {
         return when {
-            relativeX(x) in 1..world.roadLength
-                    || relativeZ(z) in 1..world.roadLength -> PlotWorldSpaceType.Road
+            relativeX(x) in roadLengthRange
+                    || relativeZ(z) in roadLengthRange -> PlotWorldSpaceType.Road
             relativeX(x) == world.roadLength + 1
                     || relativeZ(z) == world.roadLength + 1 -> PlotWorldSpaceType.Border
             relativeX(x) == 0
@@ -50,9 +52,9 @@ class PlotWorldManager(val world: PlotWorld) {
         }
     }
 
-    fun relativeX(x: Int) =(abs(x) + roadLimit + 1) % (plotTotalLength + world.roadLength)
+    fun relativeX(x: Int) = (abs(x) + roadLimit + 1) % (plotTotalLength + world.roadLength)
 
-    fun relativeZ(z: Int) =(abs(z) + roadLimit + 1) % (plotTotalWidth + world.roadLength)
+    fun relativeZ(z: Int) = (abs(z) + roadLimit + 1) % (plotTotalWidth + world.roadLength)
 
     fun relativeVector(vector: Vector2) = Vector2(
         x = relativeX(vector.x),
